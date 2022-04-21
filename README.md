@@ -38,8 +38,8 @@
 
 
 
-
-- 🔭 Leaving the health area, entering headlong as DEV.
+- 📖 Studying on your own, if anyone wants to teach me. I'm always willing to learn.
+- 🔭 Leaving the health work area, entering headlong as DEV.
 - 🤔 Looking for a chance to join as Jr or intern. (What comes is profit) 😊
 - 💬 Ask me if I want to play League of legends, why probably yes.
 - 😄 Pronouns: He/him
