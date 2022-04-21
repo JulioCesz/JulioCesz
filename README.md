@@ -22,6 +22,8 @@
 
 
 
+
+
 <h3 align="center">
   <br> <img src="https://i.pinimg.com/originals/6c/c7/21/6cc721c57ee9e9f7efaa1bd13a526122.gif" width="200"> </br>
 </h3>
@@ -35,4 +37,11 @@
 <br/>
 
 
+
+
+- 🔭 Leaving the health area, entering headlong as DEV.
+- 🤔 Looking for a chance to join as Jr or intern. (What comes is profit) 😊
+- 💬 Ask me if I want to play League of legends, why probably yes.
+- 😄 Pronouns: He/him
+- ⚡ Fun fact: I don't like taking care of people, so I study to take care of computers.
 
