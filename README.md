@@ -48,3 +48,8 @@
 
 [![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/charlesreisribeiro/)](https://https://www.linkedin.com/in/julio-césar-dos-santos-junior-9b6940151/)
 
+
+
+
+
+<img src="https://github-readme-stats.vercel.app/api?username=JulioCesz&&show_icons=true&title_color=fafafa&icon_color=bb2acf&text_color=daf7dc&bg_color=161515%22%3E
