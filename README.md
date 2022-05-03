@@ -45,3 +45,6 @@
 - 😄 Pronouns: He/him
 - ⚡ Fun fact: I don't like taking care of people, so I study to take care of computers.
 
+
+[![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/charlesreisribeiro/)](https://https://www.linkedin.com/in/julio-césar-dos-santos-junior-9b6940151/)
+
