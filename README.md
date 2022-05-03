@@ -18,35 +18,20 @@
     
 </p>
 
-
-
-
-
-
-
 <h3 align="center">
   <br> <img src="https://i.pinimg.com/originals/6c/c7/21/6cc721c57ee9e9f7efaa1bd13a526122.gif" width="200"> </br>
 </h3>
-
-
-
 
 <br>
    <p align="center"> <img src="https://komarev.com/ghpvc/?username=wueslle&label=Profile%20views&style=flat&theme=react" alt="JulioCesz" /> </p>
   <br>
 <br/>
 
-
-
 - 📖 Studying on your own, if anyone wants to teach me. I'm always willing to learn.
-- 🔭 Leaving the health work area, entering headlong as DEV.
+- 🔭 Leaving the health work area, diving the developer career.
 - 🤔 Looking for a chance to join as Jr or intern. (What comes is profit) 😊
 - 💬 Ask me if I want to play League of legends, why probably yes.
 - 😄 Pronouns: He/him
 - ⚡ Fun fact: I don't like taking care of people, so I study to take care of computers.
 
-
-[![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/charlesreisribeiro/)](https://https://www.linkedin.com/in/julio-césar-dos-santos-junior-9b6940151/)
-
-
-
+[![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/julio-césar-dos-santos-junior-9b6940151/)](https://www.linkedin.com/in/julio-césar-dos-santos-junior-9b6940151/)
