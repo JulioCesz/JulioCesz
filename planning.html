@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Poker | Julio Cesar</title>
+    <style>
+        /* Reset e Variáveis */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --bg: #1a0b2e;
+            --surface: #2d1b4e;
+            --surface-hover: #3b2363;
+            --primary: #a855f7;
+            --primary-glow: #c084fc;
+            --text: #e9d5ff;
+            --text-light: #ffffff;
+            --card-hidden: #4c1d95;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background-color: var(--surface);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 900px;
+            border-top: 4px solid var(--primary);
+        }
+
+        /* --- Tela de Login --- */
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 2px solid var(--primary);
+            background-color: rgba(0,0,0,0.2);
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+        }
+
+        .pokemon-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .pokemon-option {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.05);
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pokemon-option img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5));
+        }
+
+        .pokemon-option:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .pokemon-option.selected {
+            border-color: var(--primary-glow);
+            background-color: rgba(168, 85, 247, 0.2);
+            transform: scale(1.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, #7e22ce, #6b21a8);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+        }
+        
+        button:disabled {
+            background: #444;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* --- Tela da Sala (Poker) --- */
+        #room-screen {
+            display: none;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            background: #4c1d95;
+            margin-top: 0;
+        }
+
+        /* Mesa com os jogadores */
+        .table-area {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 100px;
+            padding: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            min-height: 250px;
+            align-items: center;
+            border: 2px dashed rgba(168, 85, 247, 0.3);
+        }
+
+        .player-spot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 100px;
+        }
+
+        .player-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: var(--surface-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--primary);
+            position: relative;
+        }
+
+        .player-avatar img {
+            width: 80%;
+            height: 80%;
+        }
+
+        .player-name {
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .player-card-played {
+            width: 40px;
+            height: 60px;
+            border-radius: 6px;
+            background-color: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .player-card-played.has-voted {
+            background-color: var(--card-hidden);
+            border-color: var(--primary-glow);
+        }
+
+        .player-card-played.revealed {
+            background-color: #fff;
+            color: var(--bg);
+            border-color: #fff;
+        }
+
+        /* Deck de Cartas para Votar */
+        .cards-deck {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .poker-card {
+            width: 60px;
+            height: 90px;
+            border-radius: 8px;
+            background-color: var(--surface-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .poker-card:hover {
+            transform: translateY(-10px);
+            background-color: var(--primary);
+        }
+
+        .poker-card.selected {
+            border-color: white;
+            background-color: var(--primary);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(168, 85, 247, 0.6);
+        }
+
+        /* Painel de Resultados */
+        .results-panel {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(107, 33, 168, 0.2));
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .results-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .result-item h4 {
+            font-size: 1rem;
+            color: #d8b4fe;
+            margin-bottom: 5px;
+        }
+
+        .result-item span {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .room-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .info-text {
+            font-size: 0.85rem;
+            color: #a78bfa;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- TELA DE LOGIN -->
+        <div id="login-screen">
+            <h1>Poké Planning</h1>
+            <p style="text-align: center; margin-bottom: 20px;">Escolha seu avatar e entre na sala para estimar as tarefas.</p>
+            
+            <div class="input-group">
+                <label for="player-name">Seu Nome:</label>
+                <input type="text" id="player-name" placeholder="Ex: Julio" maxlength="15">
+            </div>
+
+            <div class="input-group">
+                <label>Escolha seu Pokémon:</label>
+                <div class="pokemon-grid" id="pokemon-grid">
+                    <!-- Gerado via JS -->
+                </div>
+            </div>
+
+            <button id="btn-join" disabled>Entrar na Sala</button>
+        </div>
+
+        <!-- TELA DA SALA POKER -->
+        <div id="room-screen">
+            <div class="header-actions">
+                <h2>Sala de Estimativas</h2>
+                <button class="btn-small" id="btn-leave">Sair da Sala</button>
+            </div>
+
+            <div class="table-area" id="table-area">
+                <!-- Jogadores aparecem aqui -->
+            </div>
+
+            <!-- Painel de Resultados (Aparece ao revelar) -->
+            <div class="results-panel" id="results-panel">
+                <h3>Resultado da Rodada</h3>
+                <div class="results-row">
+                    <div class="result-item">
+                        <h4>Somatória</h4>
+                        <span id="res-sum">0</span>
+                    </div>
+                    <div class="result-item">
+                        <h4>Média</h4>
+                        <span id="res-avg">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="room-actions">
+                <button id="btn-reveal">Revelar Cartas</button>
+                <button id="btn-reset" class="btn-small" style="display:none;">Nova Rodada</button>
+            </div>
+
+            <h3 style="margin-top: 20px;">Escolha sua Carta</h3>
+            <div class="cards-deck" id="cards-deck">
+                <!-- Cartas de 1 a 12 geradas via JS -->
+            </div>
+            
+            <p class="info-text">
+                💡 <b>Dica:</b> Como este é um site estático no GitHub Pages, o modo multiplayer foi simulado para funcionar entre abas. Abra este link em outra aba do navegador para adicionar mais pessoas na mesma sala!
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // --- Configurações e Estado ---
+        const ROOM_KEY = 'juliocesz_planning_poker_room';
+        const CARDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        
+        let myId = sessionStorage.getItem('poker_player_id');
+        if (!myId) {
+            myId = 'player_' + Math.random().toString(36).substr(2, 9);
+            sessionStorage.setItem('poker_player_id', myId);
+        }
+
+        let selectedPokemonUrl = null;
+        
+        // Elementos da DOM
+        const loginScreen = document.getElementById('login-screen');
+        const roomScreen = document.getElementById('room-screen');
+        const playerNameInput = document.getElementById('player-name');
+        const btnJoin = document.getElementById('btn-join');
+        const pokemonGrid = document.getElementById('pokemon-grid');
+        const tableArea = document.getElementById('table-area');
+        const cardsDeck = document.getElementById('cards-deck');
+        
+        const btnReveal = document.getElementById('btn-reveal');
+        const btnReset = document.getElementById('btn-reset');
+        const btnLeave = document.getElementById('btn-leave');
+        const resultsPanel = document.getElementById('results-panel');
+        const resSum = document.getElementById('res-sum');
+        const resAvg = document.getElementById('res-avg');
+
+        // --- Geração de Avatares Aleatórios ---
+        function generatePokemonGrid() {
+            // Garante que o Gengar (94) esteja sempre presente
+            const pokemonIds = new Set([94]); 
+            while(pokemonIds.size < 10) {
+                // IDs de 1 a 151 (Primeira Geração)
+                pokemonIds.add(Math.floor(Math.random() * 151) + 1);
+            }
+
+            Array.from(pokemonIds).forEach(id => {
+                const imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+                
+                const div = document.createElement('div');
+                div.className = 'pokemon-option';
+                div.innerHTML = `<img src="${imgUrl}" alt="Pokemon ${id}">`;
+                
+                div.addEventListener('click', () => {
+                    document.querySelectorAll('.pokemon-option').forEach(el => el.classList.remove('selected'));
+                    div.classList.add('selected');
+                    selectedPokemonUrl = imgUrl;
+                    validateLogin();
+                });
+                
+                pokemonGrid.appendChild(div);
+            });
+        }
+
+        // --- Lógica de Login ---
+        playerNameInput.addEventListener('input', validateLogin);
+
+        function validateLogin() {
+            if (playerNameInput.value.trim() !== '' && selectedPokemonUrl) {
+                btnJoin.disabled = false;
+            } else {
+                btnJoin.disabled = true;
+            }
+        }
+
+        btnJoin.addEventListener('click', () => {
+            const name = playerNameInput.value.trim();
+            joinRoom(name, selectedPokemonUrl);
+            loginScreen.style.display = 'none';
+            roomScreen.style.display = 'flex';
+        });
+
+        // --- Lógica da Sala e Sincronização Local (Multi-aba) ---
+        function getRoomData() {
+            const defaultData = { players: {}, revealed: false };
+            const data = localStorage.getItem(ROOM_KEY);
+            return data ? JSON.parse(data) : defaultData;
+        }
+
+        function saveRoomData(data) {
+            localStorage.setItem(ROOM_KEY, JSON.stringify(data));
+            updateUI(); // Atualiza a tela atual
+        }
+
+        function joinRoom(name, avatarUrl) {
+            const room = getRoomData();
+            room.players[myId] = { name, avatarUrl, vote: null };
+            saveRoomData(room);
+        }
+
+        function vote(value) {
+            const room = getRoomData();
+            if(room.revealed) return; // Não vota se já revelou
+            
+            if (room.players[myId]) {
+                room.players[myId].vote = value;
+                saveRoomData(room);
+            }
+        }
+
+        // --- Renderização da Interface ---
+        function generateCards() {
+            cardsDeck.innerHTML = '';
+            CARDS.forEach(val => {
+                const card = document.createElement('div');
+                card.className = 'poker-card';
+                card.innerText = val;
+                card.addEventListener('click', () => {
+                    const room = getRoomData();
+                    if(room.revealed) return;
+
+                    document.querySelectorAll('.poker-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    vote(val);
+                });
+                cardsDeck.appendChild(card);
+            });
+        }
+
+        function updateUI() {
+            const room = getRoomData();
+            
+            // Verifica se eu estou na sala para mostrar a tela correta
+            if (room.players[myId]) {
+                loginScreen.style.display = 'none';
+                roomScreen.style.display = 'flex';
+            } else {
+                loginScreen.style.display = 'flex';
+                roomScreen.style.display = 'none';
+                return;
+            }
+
+            // Renderiza a mesa
+            tableArea.innerHTML = '';
+            let totalVotes = 0;
+            let sum = 0;
+
+            Object.keys(room.players).forEach(pId => {
+                const p = room.players[pId];
+                
+                const spot = document.createElement('div');
+                spot.className = 'player-spot';
+                
+                const avatar = document.createElement('div');
+                avatar.className = 'player-avatar';
+                avatar.innerHTML = `<img src="${p.avatarUrl}">`;
+                
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'player-name';
+                nameDiv.innerText = p.name;
+                
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'player-card-played';
+                
+                if (p.vote !== null) {
+                    if (room.revealed) {
+                        cardDiv.classList.add('revealed');
+                        cardDiv.innerText = p.vote;
+                        sum += p.vote;
+                        totalVotes++;
+                    } else {
+                        cardDiv.classList.add('has-voted');
+                        cardDiv.innerText = '✓';
+                    }
+                } else {
+                    cardDiv.innerText = '?';
+                }
+
+                spot.appendChild(avatar);
+                spot.appendChild(nameDiv);
+                spot.appendChild(cardDiv);
+                tableArea.appendChild(spot);
+            });
+
+            // Atualiza botões e cartas
+            if (room.revealed) {
+                btnReveal.style.display = 'none';
+                btnReset.style.display = 'block';
+                resultsPanel.style.display = 'flex';
+                
+                resSum.innerText = sum;
+                resAvg.innerText = totalVotes > 0 ? (sum / totalVotes).toFixed(1) : 0;
+                
+                document.querySelectorAll('.poker-card').forEach(c => c.style.opacity = '0.5');
+            } else {
+                btnReveal.style.display = 'block';
+                btnReset.style.display = 'none';
+                resultsPanel.style.display = 'none';
+                
+                document.querySelectorAll('.poker-card').forEach(c => c.style.opacity = '1');
+                
+                // Mantém a carta selecionada visualmente
+                const myVote = room.players[myId].vote;
+                document.querySelectorAll('.poker-card').forEach(c => {
+                    if (parseInt(c.innerText) === myVote) {
+                        c.classList.add('selected');
+                    } else {
+                        c.classList.remove('selected');
+                    }
+                });
+            }
+        }
+
+        // --- Ações da Sala ---
+        btnReveal.addEventListener('click', () => {
+            const room = getRoomData();
+            room.revealed = true;
+            saveRoomData(room);
+        });
+
+        btnReset.addEventListener('click', () => {
+            const room = getRoomData();
+            room.revealed = false;
+            Object.keys(room.players).forEach(pId => {
+                room.players[pId].vote = null;
+            });
+            saveRoomData(room);
+        });
+
+        btnLeave.addEventListener('click', () => {
+            const room = getRoomData();
+            delete room.players[myId];
+            saveRoomData(room);
+            
+            // Limpa as seleções locais
+            document.querySelectorAll('.pokemon-option').forEach(el => el.classList.remove('selected'));
+            playerNameInput.value = '';
+            selectedPokemonUrl = null;
+            btnJoin.disabled = true;
+            
+            loginScreen.style.display = 'flex';
+            roomScreen.style.display = 'none';
+        });
+
+        // Escuta mudanças no localStorage feitas por outras abas
+        window.addEventListener('storage', (e) => {
+            if (e.key === ROOM_KEY) {
+                updateUI();
+            }
+        });
+
+        // --- Inicialização ---
+        generatePokemonGrid();
+        generateCards();
+        updateUI();
+
+    </script>
+</body>
+</html>
