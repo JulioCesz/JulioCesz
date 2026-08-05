@@ -1,4 +1,4 @@
-/* Reset básico */
+
 * {
     margin: 0;
     padding: 0;
@@ -9,14 +9,14 @@
 body {
     display: flex;
     min-height: 100vh;
-    background-color: #1a0b2e; /* Roxo escuro profundo */
-    color: #e9d5ff; /* Texto lilás claro */
+    background-color: #1a0b2e; 
+    color: #e9d5ff; 
 }
 
-/* Barra Lateral */
+
 .sidebar {
     width: 280px;
-    background-color: #2d1b4e; /* Roxo intermediário */
+    background-color: #2d1b4e; 
     padding: 30px 20px;
     display: flex;
     flex-direction: column;
@@ -32,7 +32,7 @@ body {
     letter-spacing: 1px;
 }
 
-/* Menus expansíveis na barra lateral */
+
 details {
     margin-bottom: 15px;
     background-color: #3b2363;
@@ -110,7 +110,7 @@ header h1 {
 
 header h2 {
     font-size: 1.8rem;
-    color: #c084fc; /* Roxo vibrante */
+    color: #c084fc; 
     margin-bottom: 40px;
     font-weight: 400;
 }
@@ -156,33 +156,33 @@ header h2 {
     transform: translateY(-2px);
 }
 
-/* Gengar no canto inferior esquerdo */
+
 .gengar-sprite {
     position: fixed;
     bottom: 10px;
     left: 10px;
     width: 140px;
     z-index: 100;
-    pointer-events: none; /* Para não atrapalhar cliques na barra lateral */
+    pointer-events: none; 
     filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5));
     animation: float 3s ease-in-out infinite;
 }
 
-/* Animação suave de flutuação para o Gengar */
+
 @keyframes float {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
     100% { transform: translateY(0px); }
 }
 
-/* Responsividade para telas menores */
+
 @media (max-width: 768px) {
     body {
         flex-direction: column;
     }
     .sidebar {
         width: 100%;
-        padding-bottom: 150px; /* Espaço pro Gengar não cobrir menus no mobile */
+        padding-bottom: 150px; 
     }
     .main-content {
         padding: 30px;
