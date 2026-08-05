@@ -1,0 +1,193 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    background-color: #1a0b2e; /* Roxo escuro profundo */
+    color: #e9d5ff; /* Texto lilás claro */
+}
+
+/* Barra Lateral */
+.sidebar {
+    width: 280px;
+    background-color: #2d1b4e; /* Roxo intermediário */
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+.sidebar h3 {
+    color: #c084fc;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Menus expansíveis na barra lateral */
+details {
+    margin-bottom: 15px;
+    background-color: #3b2363;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+summary {
+    padding: 12px 15px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #f3e8ff;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::after {
+    content: "▼";
+    font-size: 0.8rem;
+    color: #c084fc;
+    transition: transform 0.3s ease;
+}
+
+details[open] summary::after {
+    transform: rotate(180deg);
+}
+
+details ul {
+    list-style: none;
+    padding: 10px 15px;
+    background-color: #2d1b4e;
+}
+
+details ul li {
+    margin-bottom: 10px;
+}
+
+details ul li:last-child {
+    margin-bottom: 0;
+}
+
+details ul li a {
+    color: #d8b4fe;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+details ul li a:hover {
+    color: #ffffff;
+}
+
+/* Conteúdo Principal */
+.main-content {
+    flex: 1;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 900px;
+}
+
+header h1 {
+    font-size: 3.5rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+header h2 {
+    font-size: 1.8rem;
+    color: #c084fc; /* Roxo vibrante */
+    margin-bottom: 40px;
+    font-weight: 400;
+}
+
+.about-section {
+    background-color: rgba(59, 35, 99, 0.4);
+    padding: 30px;
+    border-radius: 12px;
+    border-left: 4px solid #a855f7;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+.about-section p {
+    margin-bottom: 20px;
+}
+
+.highlight {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Tags de Habilidades */
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.skill-tag {
+    background: linear-gradient(135deg, #7e22ce, #6b21a8);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+
+.skill-tag:hover {
+    transform: translateY(-2px);
+}
+
+/* Gengar no canto inferior esquerdo */
+.gengar-sprite {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    width: 140px;
+    z-index: 100;
+    pointer-events: none; /* Para não atrapalhar cliques na barra lateral */
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5));
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Animação suave de flutuação para o Gengar */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        padding-bottom: 150px; /* Espaço pro Gengar não cobrir menus no mobile */
+    }
+    .main-content {
+        padding: 30px;
+    }
+    header h1 {
+        font-size: 2.5rem;
+    }
+}
