@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planning Poker | Julio Cesar</title>
     <style>
-        /* Reset e Variáveis */
+
         * {
             margin: 0;
             padding: 0;
@@ -142,7 +142,7 @@
             box-shadow: none;
         }
 
-        /* --- Tela da Sala (Poker) --- */
+
         #room-screen {
             display: none;
             flex-direction: column;
@@ -162,7 +162,7 @@
             margin-top: 0;
         }
 
-        /* Mesa com os jogadores */
+
         .table-area {
             background-color: rgba(0, 0, 0, 0.2);
             border-radius: 100px;
@@ -235,7 +235,7 @@
             border-color: #fff;
         }
 
-        /* Deck de Cartas para Votar */
+
         .cards-deck {
             display: flex;
             flex-wrap: wrap;
@@ -273,7 +273,7 @@
             box-shadow: 0 10px 20px rgba(168, 85, 247, 0.6);
         }
 
-        /* Painel de Resultados */
+
         .results-panel {
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(107, 33, 168, 0.2));
             border: 1px solid var(--primary);
@@ -326,9 +326,9 @@
 <body>
 
     <div class="container">
-        <!-- TELA DE LOGIN -->
+
         <div id="login-screen">
-            <h1>Poké Planning</h1>
+            <h1>Planning POKERMON</h1>
             <p style="text-align: center; margin-bottom: 20px;">Escolha seu avatar e entre na sala para estimar as tarefas.</p>
             
             <div class="input-group">
@@ -339,14 +339,12 @@
             <div class="input-group">
                 <label>Escolha seu Pokémon:</label>
                 <div class="pokemon-grid" id="pokemon-grid">
-                    <!-- Gerado via JS -->
                 </div>
             </div>
 
             <button id="btn-join" disabled>Entrar na Sala</button>
         </div>
 
-        <!-- TELA DA SALA POKER -->
         <div id="room-screen">
             <div class="header-actions">
                 <h2>Sala de Estimativas</h2>
@@ -354,10 +352,10 @@
             </div>
 
             <div class="table-area" id="table-area">
-                <!-- Jogadores aparecem aqui -->
+
             </div>
 
-            <!-- Painel de Resultados (Aparece ao revelar) -->
+
             <div class="results-panel" id="results-panel">
                 <h3>Resultado da Rodada</h3>
                 <div class="results-row">
@@ -379,7 +377,7 @@
 
             <h3 style="margin-top: 20px;">Escolha sua Carta</h3>
             <div class="cards-deck" id="cards-deck">
-                <!-- Cartas de 1 a 12 geradas via JS -->
+  
             </div>
             
             <p class="info-text">
@@ -389,7 +387,7 @@
     </div>
 
     <script>
-        // --- Configurações e Estado ---
+
         const ROOM_KEY = 'juliocesz_planning_poker_room';
         const CARDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         
@@ -401,7 +399,7 @@
 
         let selectedPokemonUrl = null;
         
-        // Elementos da DOM
+
         const loginScreen = document.getElementById('login-screen');
         const roomScreen = document.getElementById('room-screen');
         const playerNameInput = document.getElementById('player-name');
@@ -417,12 +415,12 @@
         const resSum = document.getElementById('res-sum');
         const resAvg = document.getElementById('res-avg');
 
-        // --- Geração de Avatares Aleatórios ---
+  
         function generatePokemonGrid() {
-            // Garante que o Gengar (94) esteja sempre presente
+
             const pokemonIds = new Set([94]); 
             while(pokemonIds.size < 10) {
-                // IDs de 1 a 151 (Primeira Geração)
+
                 pokemonIds.add(Math.floor(Math.random() * 151) + 1);
             }
 
@@ -444,7 +442,7 @@
             });
         }
 
-        // --- Lógica de Login ---
+
         playerNameInput.addEventListener('input', validateLogin);
 
         function validateLogin() {
@@ -462,7 +460,6 @@
             roomScreen.style.display = 'flex';
         });
 
-        // --- Lógica da Sala e Sincronização Local (Multi-aba) ---
         function getRoomData() {
             const defaultData = { players: {}, revealed: false };
             const data = localStorage.getItem(ROOM_KEY);
@@ -471,7 +468,7 @@
 
         function saveRoomData(data) {
             localStorage.setItem(ROOM_KEY, JSON.stringify(data));
-            updateUI(); // Atualiza a tela atual
+            updateUI();
         }
 
         function joinRoom(name, avatarUrl) {
@@ -482,7 +479,7 @@
 
         function vote(value) {
             const room = getRoomData();
-            if(room.revealed) return; // Não vota se já revelou
+            if(room.revealed) return; 
             
             if (room.players[myId]) {
                 room.players[myId].vote = value;
@@ -490,7 +487,7 @@
             }
         }
 
-        // --- Renderização da Interface ---
+
         function generateCards() {
             cardsDeck.innerHTML = '';
             CARDS.forEach(val => {
@@ -512,7 +509,7 @@
         function updateUI() {
             const room = getRoomData();
             
-            // Verifica se eu estou na sala para mostrar a tela correta
+
             if (room.players[myId]) {
                 loginScreen.style.display = 'none';
                 roomScreen.style.display = 'flex';
@@ -522,7 +519,7 @@
                 return;
             }
 
-            // Renderiza a mesa
+
             tableArea.innerHTML = '';
             let totalVotes = 0;
             let sum = 0;
@@ -564,7 +561,7 @@
                 tableArea.appendChild(spot);
             });
 
-            // Atualiza botões e cartas
+
             if (room.revealed) {
                 btnReveal.style.display = 'none';
                 btnReset.style.display = 'block';
@@ -581,7 +578,7 @@
                 
                 document.querySelectorAll('.poker-card').forEach(c => c.style.opacity = '1');
                 
-                // Mantém a carta selecionada visualmente
+
                 const myVote = room.players[myId].vote;
                 document.querySelectorAll('.poker-card').forEach(c => {
                     if (parseInt(c.innerText) === myVote) {
@@ -593,7 +590,7 @@
             }
         }
 
-        // --- Ações da Sala ---
+
         btnReveal.addEventListener('click', () => {
             const room = getRoomData();
             room.revealed = true;
@@ -614,7 +611,7 @@
             delete room.players[myId];
             saveRoomData(room);
             
-            // Limpa as seleções locais
+
             document.querySelectorAll('.pokemon-option').forEach(el => el.classList.remove('selected'));
             playerNameInput.value = '';
             selectedPokemonUrl = null;
@@ -624,14 +621,14 @@
             roomScreen.style.display = 'none';
         });
 
-        // Escuta mudanças no localStorage feitas por outras abas
+
         window.addEventListener('storage', (e) => {
             if (e.key === ROOM_KEY) {
                 updateUI();
             }
         });
 
-        // --- Inicialização ---
+
         generatePokemonGrid();
         generateCards();
         updateUI();
